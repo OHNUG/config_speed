@@ -22,3 +22,8 @@ netconf-yang feature candidate-datastore
 end
 !
 ```
+
+#### IETF Interface Types
+
+loopback: `ianaift:softwareLoopback`
+ethernet: `ianaift:ethernetCsmacd`
