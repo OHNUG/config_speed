@@ -1,7 +1,7 @@
 import re
 
 from netmiko import ConnectHandler
-from device import lab_device
+from device import home_lab_device
 from rich import print
 
 
@@ -9,7 +9,7 @@ def connect():
 
     """Connect to the device and display uptime"""
 
-    ch = ConnectHandler(**lab_device)
+    ch = ConnectHandler(**home_lab_device)
     version = ch.send_command("show version")
     for line in version.split("\n"):
         if "uptime" in line:
@@ -22,7 +22,7 @@ def configure_loopbacks():
 
     """Configures a specified number of loopback interfaces"""
 
-    desired_num_loopbacks = 20
+    desired_num_loopbacks = 1
     interface_config = []
     full_config = []
 
@@ -30,8 +30,8 @@ def configure_loopbacks():
 
         inter_config = [
             "interface loopback " + str(desired_num_loopbacks),
-            "deacription Demo loopback interface #: " + str(desired_num_loopbacks),
-            "ip address 1.1.1." + str(desired_num_loopbacks) + "255.255.255.255",
+            "description Demo loopback interface #: " + str(desired_num_loopbacks),
+            "ip address 1.1.1." + str(desired_num_loopbacks) + " 255.255.255.255",
         ]
 
         interface_config.append(inter_config)

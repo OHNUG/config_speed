@@ -1,18 +1,21 @@
 from rich import print
 from ncclient import manager
-from device import lab_device
+from device import home_lab_device
 from xml.dom.minidom import parseString
 
 import xmltodict
+
+from xml.etree.ElementTree import Element, SubElement, Comment, tostring, ElementTree
+from xml.dom import minidom
 
 
 def connect():
 
     mgr = manager.connect(
-        host=lab_device["host"],
+        host=home_lab_device["host"],
         port=830,
-        username=lab_device["username"],
-        password=lab_device["password"],
+        username=home_lab_device["username"],
+        password=home_lab_device["password"],
         hostkey_verify=False,
         device_params={"name": "default"},
         look_for_keys=False,
@@ -29,7 +32,7 @@ def get_capabilities():
     with connect() as connection:
         print(
             "\n***Remote Devices Capabilities for device {}***\n".format(
-                lab_device["host"]
+                home_lab_device["host"]
             )
         )
 
@@ -60,11 +63,11 @@ def get_interfaces():
     return interface_data
 
 
-def add_interfaces():
+def payload_builder(my_ints):
 
-    """adds a loopback interface"""
+    """Builds XML Payloads for Interface config. Example payload below"""
 
-    add_loopback = """
+    """Example:
     <config>
       <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
         <interface>
@@ -81,19 +84,79 @@ def add_interfaces():
           <ipv6 xmlns="urn:ietf:params:xml:ns:yang:ietf-ip"/>
         </interface>
       </interfaces>
-    </config>"""
+    </config>
+    """
+
+    # Parent structure
+    root = Element("config")
+    parent = SubElement(
+        root, "interfaces", {"xmlns": "urn:ietf:params:xml:ns:yang:ietf-interfaces"}
+    )
+
+    # Loop for interfaces
+    for my_int in my_ints:
+
+        child = SubElement(parent, "interface")
+        int_name = SubElement(child, "name")
+        int_name.text = my_int["name"]
+        int_description = SubElement(child, "description")
+        int_description.text = my_int["description"]
+        int_type = SubElement(
+            child, "type", {"xmlns:ianaift": "urn:ietf:params:xml:ns:yang:iana-if-type"}
+        )
+        int_type.text = my_int["type"]
+        int_enabled = SubElement(child, "enabled")
+        int_enabled.text = my_int["enabled"]
+        int_ipv4 = SubElement(
+            child, "ipv4", {"xmlns": "urn:ietf:params:xml:ns:yang:ietf-ip"}
+        )
+        int_address = SubElement(int_ipv4, "address")
+        int_ip = SubElement(int_address, "ip")
+        int_ip.text = my_int["ip"]
+        int_netmask = SubElement(int_address, "netmask")
+        int_netmask.text = my_int["netmask"]
+
+    payload = tostring(root, method="html").decode("utf-8")
+
+    return payload
+
+
+def add_interfaces(self):
+
+    add_loopback = payload_builder(my_ints)
 
     with connect() as connection:
-        response = connection.edit_config(target="running", config=add_loopback)
+
+        response = connection.edit_config(add_loopback, target="candidate")
         print(response)
+
+        connection.commit()
 
 
 if __name__ == "__main__":
 
-    add_interfaces()
+    my_ints = [
+        {
+            "name": "Loopback100",
+            "description": "Description for interface 1",
+            "type": "ianaift:softwareLoopback",
+            "enabled": "true",
+            "ip": "1.1.1.1",
+            "netmask": "255.255.255.255",
+        },
+        {
+            "name": "Loopback200",
+            "description": "Description for interface 2",
+            "type": "ianaift:softwareLoopback",
+            "enabled": "true",
+            "ip": "2.2.2.2",
+            "netmask": "255.255.255.255",
+        },
+    ]
+
+    add_interfaces(my_ints)
 
     # data = get_interfaces()
-#
-# for e in data:
-#    print(e["name"])
-#
+    #
+    # for e in data:
+    #     print(e["name"])

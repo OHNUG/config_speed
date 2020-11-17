@@ -27,3 +27,13 @@ end
 
 loopback: `ianaift:softwareLoopback`
 ethernet: `ianaift:ethernetCsmacd`
+
+#### Other notes
+Copy ios image downloaded to macbook.
+
+Enable remote login:
+System Preferences > Sharing > Check Remote Login
+
+From the switch:
+`copy scp://<username>:<password>@<ipaddress>/Downloads/<imagename> flash:`
+
