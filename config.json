@@ -1,0 +1,8 @@
+{
+    "host": "10.10.20.48",
+    "ssh_port": "22",
+    "netconf_port": "830",
+    "restconf_port": "443",
+    "username": "developer",
+    "password": "C1sco12345"
+}
