@@ -154,9 +154,13 @@ if __name__ == "__main__":
         },
     ]
 
+    print("\nInterfaces on switch prior to change:\n")
+    for e in get_interfaces():
+        print(e["name"])
+
+    print("\nAdding new interfaces\n")
     add_interfaces(my_ints)
 
-    # data = get_interfaces()
-    #
-    # for e in data:
-    #     print(e["name"])
+    print("\nInterfaces on switch post change:\n")
+    for e in get_interfaces():
+        print(e["name"])
