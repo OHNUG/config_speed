@@ -37,3 +37,7 @@ System Preferences > Sharing > Check Remote Login
 From the switch:
 `copy scp://<username>:<password>@<ipaddress>/Downloads/<imagename> flash:`
 
+I ran into timeout issues with both netconf & restconf.
+
+For Netconf I added `timeout=300` to the manager
+For Restconf I added `timeout=None` to the Client instance
