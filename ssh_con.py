@@ -22,7 +22,7 @@ def configure_loopbacks():
 
     """Configures a specified number of loopback interfaces"""
 
-    desired_num_loopbacks = 1
+    desired_num_loopbacks = 100
     interface_config = []
     full_config = []
 

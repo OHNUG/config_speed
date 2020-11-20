@@ -20,6 +20,7 @@ def connect():
         device_params={"name": "default"},
         look_for_keys=False,
         allow_agent=False,
+        timeout=300,
     )
 
     return mgr
@@ -135,32 +136,23 @@ def add_interfaces(self):
 
 if __name__ == "__main__":
 
-    my_ints = [
-        {
-            "name": "Loopback100",
-            "description": "Description for interface 1",
+    desired_num_loopbacks = 100
+    my_ints = []
+
+    while desired_num_loopbacks > 0:
+
+        interface = {
+            "name": "Loopback" + str(desired_num_loopbacks),
+            "description": "Demo loopback interface #: " + str(desired_num_loopbacks),
             "type": "ianaift:softwareLoopback",
             "enabled": "true",
-            "ip": "1.1.1.1",
+            "ip": "1.1.1." + str(desired_num_loopbacks),
             "netmask": "255.255.255.255",
-        },
-        {
-            "name": "Loopback200",
-            "description": "Description for interface 2",
-            "type": "ianaift:softwareLoopback",
-            "enabled": "true",
-            "ip": "2.2.2.2",
-            "netmask": "255.255.255.255",
-        },
-    ]
+        }
 
-    print("\nInterfaces on switch prior to change:\n")
-    for e in get_interfaces():
-        print(e["name"])
+        my_ints.append(interface)
+        desired_num_loopbacks -= 1
 
-    print("\nAdding new interfaces\n")
+    print("\nAdding new interfaces:\n")
+    print(my_ints)
     add_interfaces(my_ints)
-
-    print("\nInterfaces on switch post change:\n")
-    for e in get_interfaces():
-        print(e["name"])

@@ -1,0 +1,17 @@
+netconf:
+real    0m16.406s
+real    0m46.196s
+real    0m47.049s
+avg: 36.55s
+
+restconf:
+real    0m45.327s
+real    0m43.973s
+real    0m44.832s
+avg: 44.71s
+
+ssh:
+real    0m24.108s
+real    0m24.087s
+real    0m23.366s
+avg: 23.85
