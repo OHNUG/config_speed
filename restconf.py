@@ -94,8 +94,6 @@ def add_interfaces(self):
             json=add_loopback,
         )
 
-    # print(r.text)
-
 
 if __name__ == "__main__":
 
@@ -119,14 +117,3 @@ if __name__ == "__main__":
     print("\nAdding new interfaces:\n")
     print(my_ints)
     add_interfaces(my_ints)
-
-    # payload_builder(my_ints)
-
-    # print(get_interfaces())
-
-    # print(get_capabilities())
-
-    # my_ints = get_interfaces()
-
-    # for interface in my_ints["ietf-interfaces:interfaces"]["interface"]:
-    #     print(interface["name"])
