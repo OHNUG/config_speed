@@ -118,6 +118,7 @@ def payload_builder(my_ints):
         int_netmask.text = my_int["netmask"]
 
     payload = tostring(root, method="html").decode("utf-8")
+    print(payload)
 
     return payload
 
