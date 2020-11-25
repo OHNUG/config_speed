@@ -47,9 +47,13 @@ interface Loopback4
 |Average|**23.85**|**36.55**|**44.71**|
 
 ### Payload Sizes:
-| | SSH | NETCONF | RESTCONF |
-|-|-----|---------|----------|
-|
+```
+(venv) tlofreso@Anthonys-MacBook-Pro:~/Projects/config_speed/payloads$ ls -l | sort -nk5
+total 144
+-rw-r--r--  1 tlofreso  staff    12K Nov 25 08:39 loopback_config.txt
+-rw-r--r--  1 tlofreso  staff    23K Nov 25 08:39 loopback_config.json
+-rw-r--r--  1 tlofreso  staff    34K Nov 25 08:39 loopback_config.xml
+```
 
 ## Configurations
 ### SSH
