@@ -31,7 +31,28 @@ interface Loopback4
 ...
 ```
 
-## SSH
+### Summary of Details for Various Protocols:
+|            | SSH            | REST     | NETCONF  | RESTCONF | gRPC |
+|------------|----------------|----------|----------|----------|------|
+| Transport  | ssh            | https    | ssh      | https    | HTTP/2     |
+| Port       | 22             | 443      | 830      | 443      | Varies     |
+| RFC        |                |          | 6241     | 8040     |      |
+| Data       | CLI | JSON/XML | XML      | JSON/XML | JSON/XML     |
+| Python lib | netmiko        | httpx | ncclient | httpx | grpcio |
+
+### Results:
+| | SSH | NETCONF | RESTCONF |
+|-|-----|---------|----------|
+|Runs in Seconds (1,2,3)|24.10, 24.08, 23.36|16.40,46.19,47.04|45.32,43.97,44.83|
+|Average|**23.85**|**36.55**|**44.71**|
+
+### Payload Sizes:
+| | SSH | NETCONF | RESTCONF |
+|-|-----|---------|----------|
+|
+
+## Configurations
+### SSH
 
 #### IOS-XE | Enable SSH
 ```
@@ -57,7 +78,7 @@ ip ssh version 2
 !
 ```
 
-## NETCONF
+### NETCONF
 
 #### IOS-XE | Enable NETCONF
 ```
@@ -72,7 +93,7 @@ end
 !
 ```
 
-## RESTCONF
+### RESTCONF
 
 #### IOS-XE | Enable RESTCONF
 ```
@@ -87,7 +108,7 @@ end
 !
 ```
 
-### Notes
+## Notes
 One observation, the consistency for enabling various config operations differes quite a bit. Some vendors are more consistent than others:
 
 Configuring: SSH / NETCONF / RESTCONF / gNMI / REST in Cisco's IOS-XE:
